@@ -1,0 +1,47 @@
+
+
+<form>
+    <label for="textfeld">Gib deinen Namen ein:</label>
+    <input type="text" id="textfeld" name="name" value="">
+    <input type="submit" value="Absenden">
+</form>
+
+<form>
+    <label for="auswahlliste">Wähle deinen Namen:</label>
+    <select id="auswahlliste" name="name">
+        <option value="Sarita">Sarita</option>
+        <option value="Klaus">Klaus</option>
+        <option value="Johannes">Johannes</option>
+        <option value="Maike">Maike</option>
+    </select>
+    <input type="submit" value="Absenden">
+</form>
+
+
+<script>
+        // Eventlistener, um den eingegebenen Wert zu speichern, wenn das Textfeld geändert wird
+        document.getElementById('textfeld').addEventListener('input', function() {
+            var eingabeWert = this.value;
+            localStorage.setItem('eingabeWert', eingabeWert);
+        });
+
+        // Beim Laden der Seite das Textfeld mit dem gespeicherten Wert füllen
+        var gespeicherterWert = localStorage.getItem('eingabeWert');
+        if (gespeicherterWert) {
+            document.getElementById('textfeld').value = gespeicherterWert;
+        }
+    </script>
+
+    <script>
+        // Eventlistener, um den ausgewählten Wert zu speichern, wenn die Auswahlliste geändert wird
+        document.getElementById('auswahlliste').addEventListener('change', function() {
+            var ausgewaehlterWert = this.value;
+            localStorage.setItem('ausgewaehlterWert', ausgewaehlterWert);
+        });
+
+        // Beim Laden der Seite die Auswahlliste mit dem gespeicherten Wert füllen
+        var gespeicherterWert = localStorage.getItem('ausgewaehlterWert');
+        if (gespeicherterWert) {
+            document.getElementById('auswahlliste').value = gespeicherterWert;
+        }
+    </script>

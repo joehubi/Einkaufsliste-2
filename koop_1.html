@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: rgba(0, 0, 0, 0.05);
+            margin: 0;
+        }
+        
+        header {
+            background-color: rgb(133, 192, 45);
+            display: flex;
+            padding-left: 20px;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        button_add {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            background-color: blue;
+            border: unset;
+            font-size: 32px;
+            color: white;
+        }
+
+        button {
+            height: 60px;
+            width: 60px;
+            font-size: 30px;
+        }
+
+        button_delete {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            background-color: blue;
+            border: unset;
+            font-size: 32px;
+            color: white;
+        }
+
+        .list-item {
+            background-color: white;
+            height: 60px;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            padding-left: 20px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Person Nr.1</h1>
+    </header>
+
+    <button onclick="addItemAutomatic()">
+        +
+    </button>
+
+    <button onclick="addItemManually()">
+        (+)
+    </button>
+
+    <button onclick="deleteItem()">
+        -
+    </button>
+
+    <button onclick="sum()">
+        Summe
+    </button>
+
+    {% for row in all_items %}
+
+    <div class="list-item">
+        {{ row.id }} - {{ row.created_at }} - {{ row.name }} - {{ row.amount }} kg/Stk - {{ row.price }} €
+    </div>
+  
+    {% endfor %}
+
+    <script>
+        function addItemAutomatic() {
+            let itemNumber = prompt('Nummer aus Preisliste auswählen')
+            let itemAmount = prompt('Menge (kg oder Stück)')
+            let token = '{{ csrf_token }}';
+
+            let formData = new FormData();
+            formData.append('itemNumber', itemNumber);
+            formData.append('itemAmount', itemAmount);
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch('/Person_1/addSmart/',{
+                method: 'POST',
+                body: formData
+            });
+        }
+    </script>
+
+    <script>
+        function addItemManually() {
+            let itemName = prompt('Name des Artikels')
+            let itemAmount = prompt('Menge (kg oder Stück)')
+            let itemPrice = prompt('Preis in €')            
+            let token = '{{ csrf_token }}';
+
+            let formData = new FormData();
+            formData.append('itemName', itemName);
+            formData.append('itemAmount', itemAmount);
+            formData.append('itemPrice', itemPrice);            
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch('/Person_1/add/',{
+                method: 'POST',
+                body: formData
+            });
+        }
+    </script>
+
+    <script>
+        function deleteItem() {
+
+            let itemNumber = prompt('Bitte die Nummer des Artikels eingeben der gelöscht werden soll')
+            let token = '{{ csrf_token }}';
+
+            let formData = new FormData();
+            formData.append('itemNumber', itemNumber);
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch('/Person_1/delete/',{
+                method: 'POST',
+                body: formData
+            });
+        }
+    </script>
+
+    <script>
+        function sum() {
+            let token = '{{ csrf_token }}';
+
+            let formData = new FormData();
+            formData.append('csrfmiddlewaretoken', token);
+
+            fetch('/Person_1/sum/',{
+                method: 'POST',
+                body: formData
+            });
+        }
+    </script>
+
+
+</html>
